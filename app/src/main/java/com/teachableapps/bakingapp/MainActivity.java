@@ -1,9 +1,8 @@
 package com.teachableapps.bakingapp;
 
-import android.os.AsyncTask;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,7 +11,6 @@ import android.widget.Toast;
 import com.teachableapps.bakingapp.models.Recipe;
 import com.teachableapps.bakingapp.utilities.ApiUtils;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,10 +20,8 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements RecipeListAdapter.ListItemClickListener{
     private static final String TAG = MainActivity.class.getSimpleName();
+    public static final String RECIPE_DETAIL_KEY = "recipedetail";
 
-//    private ArrayList<Recipe> mRecipeList;
-
-//    private ArrayList<Recipe> recipeList;
     private List<Recipe> mRecipeList = new ArrayList<>();
     private RecyclerView mRecipeListRecyclerView;
     private RecipeListAdapter mRecipeListAdapter;
@@ -36,11 +32,6 @@ public class MainActivity extends AppCompatActivity implements RecipeListAdapter
         setContentView(R.layout.activity_main);
 
         // Clear recipeList
-//        if (mRecipeList != null) {
-//            mRecipeList.clear();
-//        } else {
-//            mRecipeList = new ArrayList<Recipe>();
-//        }
         mRecipeList.clear();
 
         // RecyclerView
@@ -57,7 +48,12 @@ public class MainActivity extends AppCompatActivity implements RecipeListAdapter
 
     @Override
     public void OnListItemClick(Recipe recipe) {
-
+        Intent recipeDetailIntent = new Intent(MainActivity.this, RecipeDetailActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(RECIPE_DETAIL_KEY, recipe);
+        recipeDetailIntent.putExtras(bundle);
+//        recipeDetailIntent.putExtra(RECIPE_DETAIL_KEY, recipe);
+        startActivity(recipeDetailIntent);
     }
 
     public void loadRecipes() {
@@ -84,8 +80,8 @@ public class MainActivity extends AppCompatActivity implements RecipeListAdapter
             public void onFailure(Call<ArrayList<Recipe>> call, Throwable t) {
 
                 // Failed
-                t.printStackTrace();
                 Log.d(TAG,"Failed");
+                t.printStackTrace();
                 showEmptyView();
             }
         });

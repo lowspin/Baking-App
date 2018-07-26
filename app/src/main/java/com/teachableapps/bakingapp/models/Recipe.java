@@ -1,7 +1,7 @@
 package com.teachableapps.bakingapp.models;
 
 import java.util.List;
-import java.util.List;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 

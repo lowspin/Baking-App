@@ -1,6 +1,7 @@
 package com.teachableapps.bakingapp;
 
 import android.content.Context;
+import android.media.Image;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.teachableapps.bakingapp.models.Recipe;
 
 import java.util.List;
@@ -57,18 +59,43 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     }
 
     public class RecipeListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView listRecipeItemView;
+        TextView tv_recipeName;
+        TextView tv_servings;
+        ImageView iv_thumb;
+        View v_click;
 
         public RecipeListViewHolder(View itemView) {
             super(itemView);
-            listRecipeItemView = itemView.findViewById(R.id.tv_recipe_name);
-            itemView.setOnClickListener(this);
+            tv_recipeName = itemView.findViewById(R.id.tv_recipe_name);
+            tv_servings = itemView.findViewById(R.id.tv_servings);
+            iv_thumb = itemView.findViewById(R.id.iv_thumb);
+            v_click = itemView.findViewById(R.id.viewClicker);
+            v_click.bringToFront();
+            v_click.setOnClickListener(this);
+//            itemView.setOnClickListener(this);
         }
+
 
         void bind(int listIndex) {
             Recipe recipe = mRecipeList.get(listIndex);
-            listRecipeItemView = itemView.findViewById(R.id.tv_recipe_name);
-            listRecipeItemView.setText(recipe.getName());
+            //tv_recipeName = itemView.findViewById(R.id.tv_recipe_name);
+            tv_recipeName.setText(recipe.getName());
+            //tv_servings = itemView.findViewById(R.id.tv_servings);
+            tv_servings.append(recipe.getServings().toString());
+            String thumbsrc = recipe.getImage();
+            if (thumbsrc.length()==0) {
+                iv_thumb.setImageResource(R.drawable.muffin);
+            } else {
+                try {
+                    Picasso.with(mContext)
+                            .load(thumbsrc)
+                            .placeholder(R.mipmap.ic_launcher)
+                            .error(R.mipmap.ic_launcher)
+                            .into(iv_thumb);
+                } catch (Exception ex) {
+                    Log.e(TAG, ex.getMessage());
+                }
+            }
         }
 
         @Override

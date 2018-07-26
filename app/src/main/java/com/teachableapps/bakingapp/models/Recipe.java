@@ -1,42 +1,75 @@
 package com.teachableapps.bakingapp.models;
 
+import java.util.List;
+import java.util.List;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class Recipe {
-    private String id;
+
+    @SerializedName("id")
+    @Expose
+    private Integer id;
+    @SerializedName("name")
+    @Expose
     private String name;
-    private String servings;
+    @SerializedName("ingredients")
+    @Expose
+    private List<Ingredient> ingredients = null;
+    @SerializedName("steps")
+    @Expose
+    private List<Step> steps = null;
+    @SerializedName("servings")
+    @Expose
+    private Integer servings;
+    @SerializedName("image")
+    @Expose
     private String image;
 
-    public Recipe(String id, String name, String servings, String image) {
-        this.id = id;
-        this.name = name;
-        this.servings = servings;
-        this.image = image;
-    }
-
-    public String getId() {
+    public Integer getId() {
         return id;
     }
-    public void setId(String id) {
+
+    public void setId(Integer id) {
         this.id = id;
     }
 
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
 
-    public String getServings() {
+    public List<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(List<Ingredient> ingredients) {
+        this.ingredients = ingredients;
+    }
+
+    public List<Step> getSteps() {
+        return steps;
+    }
+
+    public void setSteps(List<Step> steps) {
+        this.steps = steps;
+    }
+
+    public Integer getServings() {
         return servings;
     }
-    public void setServings(String servings) {
+
+    public void setServings(Integer servings) {
         this.servings = servings;
     }
 
     public String getImage() {
         return image;
     }
+
     public void setImage(String image) {
         this.image = image;
     }

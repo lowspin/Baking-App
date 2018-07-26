@@ -7,20 +7,26 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.teachableapps.bakingapp.models.Recipe;
-import com.teachableapps.bakingapp.utilities.JsonUtils;
-import com.teachableapps.bakingapp.utilities.NetworkUtils;
+import com.teachableapps.bakingapp.utilities.ApiUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class MainActivity extends AppCompatActivity implements RecipeListAdapter.ListItemClickListener{
     private static final String TAG = MainActivity.class.getSimpleName();
 
+//    private ArrayList<Recipe> mRecipeList;
+
 //    private ArrayList<Recipe> recipeList;
-    List<Recipe> mRecipeList = new ArrayList<>();
+    private List<Recipe> mRecipeList = new ArrayList<>();
     private RecyclerView mRecipeListRecyclerView;
     private RecipeListAdapter mRecipeListAdapter;
 
@@ -45,8 +51,8 @@ public class MainActivity extends AppCompatActivity implements RecipeListAdapter
         mRecipeListAdapter = new RecipeListAdapter(mRecipeList, this, this);
         mRecipeListRecyclerView.setAdapter(mRecipeListAdapter);
 
-        // Query Recipe URL
-        new RecipeQueryTask().execute();
+        // Query Recipe API
+        loadRecipes();
     }
 
     @Override
@@ -54,35 +60,41 @@ public class MainActivity extends AppCompatActivity implements RecipeListAdapter
 
     }
 
+    public void loadRecipes() {
 
-    // AsyncTask to perform query
-    public class RecipeQueryTask extends AsyncTask<Void, Void, String> {
+        // Create a call object
+        Call<ArrayList<Recipe>> call = ApiUtils.getRecipes();
 
-        @Override
-        protected String doInBackground(Void... params) {
-            String searchResults = null;
-            try {
-                searchResults = NetworkUtils.getResponseFromHttpUrl();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return searchResults;
-        }
+        call.enqueue(new Callback<ArrayList<Recipe>>() {
 
-        @Override
-        protected void onPostExecute(String searchResults) {
-            if (searchResults != null && !searchResults.equals("")) {
-                mRecipeList = JsonUtils.parseRecipesJson(searchResults);
+            @Override
+            public void onResponse(Call<ArrayList<Recipe>> call, Response<ArrayList<Recipe>> response) {
+
+                // Success
+                mRecipeList = response.body();
                 mRecipeListAdapter.setRecipeListData(mRecipeList);
 
                 //int numRecipes = recipeList.size();
                 for (Recipe r : mRecipeList) {
                     Log.d(TAG,String.valueOf(r.getId()) + ": " + r.getName());
                 }
-
-                Log.d(TAG, "Done. " );
             }
-        }
+
+            @Override
+            public void onFailure(Call<ArrayList<Recipe>> call, Throwable t) {
+
+                // Failed
+                t.printStackTrace();
+                Log.d(TAG,"Failed");
+                showEmptyView();
+            }
+        });
+    }
+
+    // Show this view when list is empty
+    private void showEmptyView() {
+        Toast.makeText(this, "EMPTY List", Toast.LENGTH_SHORT).show();
+        Log.d(TAG,"EMPTY");
     }
 
 }

@@ -1,27 +1,32 @@
 package com.teachableapps.bakingapp.models;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class Ingredient {
 
-    private String quantity;
+    @SerializedName("quantity")
+    @Expose
+    private Float quantity;
+    @SerializedName("measure")
+    @Expose
     private String measure;
+    @SerializedName("ingredient")
+    @Expose
     private String ingredient;
 
-    public Ingredient(String quantity, String measure, String ingredient) {
-        this.quantity = quantity;
-        this.measure = measure;
-        this.ingredient = ingredient;
-    }
-
-    public String getQuantity() {
+    public Float getQuantity() {
         return quantity;
     }
-    public void setQuantity(String quantity) {
+
+    public void setQuantity(Float quantity) {
         this.quantity = quantity;
     }
 
     public String getMeasure() {
         return measure;
     }
+
     public void setMeasure(String measure) {
         this.measure = measure;
     }
@@ -29,9 +34,9 @@ public class Ingredient {
     public String getIngredient() {
         return ingredient;
     }
+
     public void setIngredient(String ingredient) {
         this.ingredient = ingredient;
     }
-
 
 }

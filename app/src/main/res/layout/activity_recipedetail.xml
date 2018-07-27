@@ -2,16 +2,15 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/tv_detail_text"
+    <FrameLayout
+        android:id="@+id/recipedetails_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Here are the Details"
-        android:textAlignment="center"
-        android:textColor="@color/colorAccent"
-        android:textSize="30sp"
-        android:textStyle="bold" />
+        android:scaleType="centerInside"/>
+
+
 </android.support.constraint.ConstraintLayout>

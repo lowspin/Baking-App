@@ -1,5 +1,6 @@
 package com.teachableapps.bakingapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -15,8 +16,9 @@ import java.util.List;
 
 public class RecipeDetailActivity extends AppCompatActivity implements RecipeDetailsFragment.OnStepClickListener {
     private static final String TAG = RecipeDetailActivity.class.getSimpleName();
+    public static final String STEP_DETAIL_KEY = "stepdetailkey";
 
-    private boolean mTwoPane = false;
+    private boolean mTwoPane = true;
     private Recipe mRecipe;
 
     @Override
@@ -47,6 +49,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
 
                 } else {
 
+                    Log.d(TAG,"--- Single Pane ---");
                     RecipeDetailsFragment recipeFragment = new RecipeDetailsFragment(mRecipe);
                     FragmentManager fragmentManager = getSupportFragmentManager();
                     fragmentManager.beginTransaction().add(R.id.recipedetails_container,recipeFragment).commit();
@@ -72,9 +75,17 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
         // Create a Toast that displays the position that was clicked
         Toast.makeText(this, "Position clicked = " + stepId, Toast.LENGTH_SHORT).show();
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        StepDetailsFragment stepFragment = new StepDetailsFragment(mRecipe.getSteps().get(stepId));
-        fragmentManager.beginTransaction().replace(R.id.stepdetails_container,stepFragment).commit();
+        if (mTwoPane) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            StepDetailsFragment stepFragment = new StepDetailsFragment(mRecipe.getSteps().get(stepId));
+            fragmentManager.beginTransaction().replace(R.id.stepdetails_container, stepFragment).commit();
+        } else {
+            Intent stepDetailIntent = new Intent(this, StepDetailActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(STEP_DETAIL_KEY, mRecipe.getSteps().get(stepId));
+            stepDetailIntent.putExtras(bundle);
+            startActivity(stepDetailIntent);
+        }
     }
 
 //    private void setTitle(String title) {

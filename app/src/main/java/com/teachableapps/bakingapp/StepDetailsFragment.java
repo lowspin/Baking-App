@@ -16,7 +16,7 @@ import java.util.List;
 public class StepDetailsFragment extends Fragment {
     private static final String TAG = StepDetailsFragment.class.getSimpleName();
 
-    private List<Step> mSteps;
+    private Step mStep;
     private TextView tv_description;
     private ImageView iv_prev;
     private ImageView iv_next;
@@ -26,8 +26,8 @@ public class StepDetailsFragment extends Fragment {
     }
 
     @SuppressLint("ValidFragment")
-    public StepDetailsFragment(List<Step> steps) {
-        mSteps = steps;
+    public StepDetailsFragment(Step step) {
+        mStep = step;
     }
 
     @Override
@@ -40,8 +40,8 @@ public class StepDetailsFragment extends Fragment {
         iv_prev = rootView.findViewById(R.id.nav_prev);
         iv_next = rootView.findViewById(R.id.nav_next);
 
-        if(mSteps != null) {
-            tv_description.setText(mSteps.get(0).getDescription());
+        if(mStep != null) {
+            tv_description.setText(mStep.getDescription());
         }
         return rootView;
 

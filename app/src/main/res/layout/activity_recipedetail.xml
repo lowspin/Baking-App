@@ -8,9 +8,19 @@
 
     <FrameLayout
         android:id="@+id/recipedetails_container"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:scaleType="centerInside"/>
+        android:scaleType="centerInside"
+        app:layout_constraintEnd_toStartOf="@+id/stepdetails_container"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="0dp" />
 
+    <FrameLayout
+        android:id="@+id/stepdetails_container"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:scaleType="centerInside"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/recipedetails_container" />
 
 </android.support.constraint.ConstraintLayout>

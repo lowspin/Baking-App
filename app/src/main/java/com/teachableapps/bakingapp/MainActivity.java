@@ -3,6 +3,7 @@ package com.teachableapps.bakingapp;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -35,9 +36,13 @@ public class MainActivity extends AppCompatActivity implements RecipeListAdapter
         mRecipeList.clear();
 
         // RecyclerView
-        mRecipeListRecyclerView = (RecyclerView) findViewById(R.id.rv_main);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        mRecipeListRecyclerView.setLayoutManager(layoutManager);
+        if(findViewById(R.id.rv_main_tablet)!=null) {
+            mRecipeListRecyclerView = (RecyclerView) findViewById(R.id.rv_main_tablet);
+            mRecipeListRecyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        }else{
+            mRecipeListRecyclerView = (RecyclerView) findViewById(R.id.rv_main);
+            mRecipeListRecyclerView.setLayoutManager(new GridLayoutManager(this, 1));
+        }
         mRecipeListRecyclerView.setHasFixedSize(false);
         mRecipeListAdapter = new RecipeListAdapter(mRecipeList, this, this);
         mRecipeListRecyclerView.setAdapter(mRecipeListAdapter);

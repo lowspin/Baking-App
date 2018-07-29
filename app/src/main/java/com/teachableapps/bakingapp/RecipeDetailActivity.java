@@ -36,7 +36,8 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
 
                 setTitle(mRecipe.getName());
 
-                if (mTwoPane) {
+                if(findViewById(R.id.div_twopanes)!=null) {
+                    mTwoPane = true;
                     Log.d(TAG,"[[[ TWO PANES ]]]");
 
                     RecipeDetailsFragment recipeFragment = new RecipeDetailsFragment(mRecipe);
@@ -48,7 +49,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
                     fragmentManager.beginTransaction().add(R.id.stepdetails_container,stepFragment).commit();
 
                 } else {
-
+                    mTwoPane = false;
                     Log.d(TAG,"--- Single Pane ---");
                     RecipeDetailsFragment recipeFragment = new RecipeDetailsFragment(mRecipe);
                     FragmentManager fragmentManager = getSupportFragmentManager();

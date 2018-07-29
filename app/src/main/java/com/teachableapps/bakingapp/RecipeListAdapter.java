@@ -89,7 +89,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
                 try {
                     Picasso.with(mContext)
                             .load(thumbsrc)
-                            .placeholder(R.mipmap.ic_launcher)
+                            .placeholder(R.drawable.muffin)
                             .error(R.mipmap.ic_launcher)
                             .into(iv_thumb);
                 } catch (Exception ex) {

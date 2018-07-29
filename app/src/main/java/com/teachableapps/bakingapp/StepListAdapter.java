@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.teachableapps.bakingapp.models.Recipe;
 import com.teachableapps.bakingapp.models.Step;
 
@@ -86,6 +87,20 @@ public class StepListAdapter extends RecyclerView.Adapter<StepListAdapter.StepLi
             Step step = mStepList.get(position);
             tv_step_order.setText(String.valueOf(step.getId()));
             tv_step_shortdesc.setText(step.getShortDescription());
+            String thumbsrc = step.getThumbnailURL();
+            if (thumbsrc.length()==0) {
+                im_stepimage.setImageResource(R.drawable.muffin);
+            } else {
+                try {
+                    Picasso.with(mContext)
+                            .load(thumbsrc)
+                            .placeholder(R.drawable.muffin)
+                            .error(R.mipmap.ic_launcher)
+                            .into(im_stepimage);
+                } catch (Exception ex) {
+                    Log.e(TAG, ex.getMessage());
+                }
+            }
         }
     }
 }

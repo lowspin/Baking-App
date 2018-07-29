@@ -102,7 +102,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         public void onClick(View view) {
             int clickedPosition = getAdapterPosition();
             mOnClickListener.OnListItemClick(mRecipeList.get(clickedPosition));
-            Log.d(TAG,"adapter clicked: " + String.valueOf(clickedPosition));
+//            Log.d(TAG,"adapter clicked: " + String.valueOf(clickedPosition));
         }
     }
 }

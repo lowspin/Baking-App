@@ -6,8 +6,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.teachableapps.bakingapp.models.Recipe;
 import com.teachableapps.bakingapp.models.Step;
 
@@ -30,6 +33,7 @@ public class StepDetailActivity extends AppCompatActivity implements StepDetails
             mRecipe = (Recipe) extras.getParcelable(RecipeDetailActivity.DETAIL_RECIPE_KEY);
             mSteps = mRecipe.getSteps();
             mStepId = extras.getInt(RecipeDetailActivity.STEP_ID_KEY);
+            setTitle(mRecipe.getName());
 
             StepDetailsFragment stepFragment = new StepDetailsFragment(mSteps.get(mStepId));
             FragmentManager fragmentManager = getSupportFragmentManager();
@@ -46,6 +50,7 @@ public class StepDetailActivity extends AppCompatActivity implements StepDetails
         } else if (newId>=numSteps) {
             Toast.makeText(this, "Already at the Last Step", Toast.LENGTH_SHORT).show();
         } else {
+
             StepDetailsFragment stepFragment = new StepDetailsFragment(mSteps.get(newId));
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.stepdetails_container, stepFragment).commit();

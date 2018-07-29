@@ -76,9 +76,9 @@ public class MainActivity extends AppCompatActivity implements RecipeListAdapter
                 mRecipeListAdapter.setRecipeListData(mRecipeList);
 
                 //int numRecipes = recipeList.size();
-                for (Recipe r : mRecipeList) {
-                    Log.d(TAG,String.valueOf(r.getId()) + ": " + r.getName());
-                }
+//                for (Recipe r : mRecipeList) {
+//                    Log.d(TAG,String.valueOf(r.getId()) + ": " + r.getName());
+//                }
             }
 
             @Override
@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements RecipeListAdapter
     // Show this view when list is empty
     private void showEmptyView() {
         Toast.makeText(this, "EMPTY List", Toast.LENGTH_SHORT).show();
-        Log.d(TAG,"EMPTY");
+        Log.d(TAG,"EMPTY List");
     }
 
 }

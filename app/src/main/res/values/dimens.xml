@@ -7,7 +7,7 @@
     <dimen name="recipe_card_margin">5dp</dimen>
     <dimen name="step_item_height">64dp</dimen>
 
-    <dimen name="exoplayer_height">128dp</dimen>
+    <dimen name="exoplayer_height">400dp</dimen>
     <dimen name="navi_button_height">48dp</dimen>
 
 </resources>

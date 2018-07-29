@@ -52,7 +52,7 @@ public class ApiUtils {
 
         Call<ArrayList<Recipe>> call = apiUtils.fetchRecipes();
 
-        Log.d(TAG,"Fetch attempt completed.");
+//        Log.d(TAG,"Fetch attempt completed.");
         return call; //apiUtils.fetchRecipes();
 
     }

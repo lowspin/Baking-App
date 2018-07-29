@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.teachableapps.bakingapp.models.Recipe;
 
@@ -39,7 +38,6 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
                     FragmentManager fragmentManager = getSupportFragmentManager();
                     fragmentManager.beginTransaction().add(R.id.recipedetails_container,recipeFragment).commit();
 
-
                     StepDetailsFragment stepFragment = new StepDetailsFragment(mRecipe.getSteps().get(0));
                     fragmentManager.beginTransaction().add(R.id.stepdetails_container,stepFragment).commit();
 
@@ -49,7 +47,6 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
                     RecipeDetailsFragment recipeFragment = new RecipeDetailsFragment(mRecipe);
                     FragmentManager fragmentManager = getSupportFragmentManager();
                     fragmentManager.beginTransaction().add(R.id.recipedetails_container,recipeFragment).commit();
-
                 }
             }
         }

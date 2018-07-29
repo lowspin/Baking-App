@@ -9,9 +9,10 @@ import android.widget.Toast;
 
 import com.teachableapps.bakingapp.models.Recipe;
 
-public class RecipeDetailActivity extends AppCompatActivity implements RecipeDetailsFragment.OnStepClickListener {
+public class RecipeDetailActivity extends AppCompatActivity implements RecipeDetailsFragment.OnStepClickListener,StepDetailsFragment.OnNavClickListener {
     private static final String TAG = RecipeDetailActivity.class.getSimpleName();
-    public static final String STEP_DETAIL_KEY = "stepdetailkey";
+    public static final String DETAIL_RECIPE_KEY = "stepdetailkey";
+    public static final String STEP_ID_KEY = "stepselectedkey";
 
     private boolean mTwoPane = true;
     private Recipe mRecipe;
@@ -57,20 +58,24 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
     // Define the behavior for onStepSelected
     @Override
     public void onStepSelected(int stepId) {
-        // Create a Toast that displays the position that was clicked
-        Toast.makeText(this, "Position clicked = " + stepId, Toast.LENGTH_SHORT).show();
-
         if (mTwoPane) {
+            // If two panes, replace right fragment in the same activity
             FragmentManager fragmentManager = getSupportFragmentManager();
             StepDetailsFragment stepFragment = new StepDetailsFragment(mRecipe.getSteps().get(stepId));
             fragmentManager.beginTransaction().replace(R.id.stepdetails_container, stepFragment).commit();
         } else {
+            // If single pane, open a new activity for step details
             Intent stepDetailIntent = new Intent(this, StepDetailActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putParcelable(STEP_DETAIL_KEY, mRecipe.getSteps().get(stepId));
+            bundle.putParcelable(DETAIL_RECIPE_KEY, mRecipe);
+            bundle.putInt(STEP_ID_KEY,stepId);
             stepDetailIntent.putExtras(bundle);
             startActivity(stepDetailIntent);
         }
     }
 
+    @Override
+    public void onNavigate(int position) {
+        // Navigation buttons are not active in tablet mode.
+    }
 }

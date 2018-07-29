@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.teachableapps.bakingapp.models.Ingredient;
@@ -92,4 +93,5 @@ public class RecipeDetailsFragment extends Fragment implements StepListAdapter.S
         // Trigger the callback method and pass in the id that was clicked
         mCallback.onStepSelected(step.getId());
     }
+
 }

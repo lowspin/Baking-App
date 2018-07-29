@@ -2,17 +2,12 @@ package com.teachableapps.bakingapp;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.teachableapps.bakingapp.models.Ingredient;
 import com.teachableapps.bakingapp.models.Recipe;
-
-import java.util.List;
 
 public class RecipeDetailActivity extends AppCompatActivity implements RecipeDetailsFragment.OnStepClickListener {
     private static final String TAG = RecipeDetailActivity.class.getSimpleName();
@@ -29,7 +24,6 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             Log.d(TAG,MainActivity.RECIPE_DETAIL_KEY);
-//            mRecipe = (Recipe) extras.getParcelable(MainActivity.RECIPE_DETAIL_KEY);
             mRecipe = (Recipe) extras.getParcelable(MainActivity.RECIPE_DETAIL_KEY);
 
             if (mRecipe != null) {
@@ -56,16 +50,6 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
                     fragmentManager.beginTransaction().add(R.id.recipedetails_container,recipeFragment).commit();
 
                 }
-//                List<Ingredient> ingredientList = mRecipe.getIngredients();
-//                recipeFragment.setIngredientList(ingredientList);
-
-//                RecipeDetailFragment fragment = new RecipeDetailFragment();
-//                StepAdapter stepAdapter = new StepAdapter(this, this);
-//                fragment.setRecipe(mRecipe);
-//                stepAdapter.setData(mRecipe.getSteps());
-//                fragment.setStepAdapter(stepAdapter);
-//                getSupportFragmentManager().beginTransaction()
-//                        .replace(R.id.recipe_detail_container, fragment).commit();
             }
         }
     }
@@ -89,7 +73,4 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
         }
     }
 
-//    private void setTitle(String title) {
-//        ((TextView)findViewById(R.id.tv_detail_text)).setText(title);
-//    }
 }

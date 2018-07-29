@@ -2,9 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/step_details_fragment"
-    android:name="com.teachableapps.bakingapp.StepDetailsFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView
         android:id="@+id/v_exoplayer"
@@ -23,25 +21,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/v_exoplayer" />
-
-    <ImageButton
-        android:id="@+id/nav_prev"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/navi_button_height"
-        android:background="@color/colorPrev"
-        android:src="@drawable/ic_navigate_before_black_24dp"
-        app:layout_constraintEnd_toStartOf="@+id/nav_next"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
-    <ImageButton
-        android:id="@+id/nav_next"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/navi_button_height"
-        android:background="@color/colorNext"
-        android:src="@drawable/ic_navigate_next_black_24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/nav_prev"
-        app:layout_constraintBottom_toBottomOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

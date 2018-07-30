@@ -41,11 +41,12 @@ public class MainActivity extends AppCompatActivity implements RecipeListAdapter
         mRecipeList.clear();
 
         // RecyclerView
-        if(findViewById(R.id.rv_main_tablet)!=null) {
-            mRecipeListRecyclerView = (RecyclerView) findViewById(R.id.rv_main_tablet);
+        mRecipeListRecyclerView = (RecyclerView) findViewById(R.id.rv_main);
+        if(findViewById(R.id.v_tablet_pixel)!=null) {
+//            mRecipeListRecyclerView = (RecyclerView) findViewById(R.id.rv_main_tablet);
             mRecipeListRecyclerView.setLayoutManager(new GridLayoutManager(this, 3));
         }else{
-            mRecipeListRecyclerView = (RecyclerView) findViewById(R.id.rv_main);
+//            mRecipeListRecyclerView = (RecyclerView) findViewById(R.id.rv_main);
             mRecipeListRecyclerView.setLayoutManager(new GridLayoutManager(this, 1));
         }
         mRecipeListRecyclerView.setHasFixedSize(false);

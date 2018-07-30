@@ -62,6 +62,9 @@ public class RecipeDetailsFragment extends Fragment implements StepListAdapter.S
         View rootView = inflater.inflate(R.layout.fragment_recipedetail, container, false);
         tvIngredients = rootView.findViewById(R.id.tv_ingredients);
 
+        // Add Recipe title to Ingredients heading
+        ((TextView) rootView.findViewById(R.id.tv_title_ingredients)).setText("Ingredients for " + mRecipe.getName() + ":");
+
         // set ingredient list
         setIngredientList();
 

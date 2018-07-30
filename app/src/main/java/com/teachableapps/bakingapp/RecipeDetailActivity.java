@@ -15,46 +15,60 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
 
     private boolean mTwoPane = true;
     private Recipe mRecipe;
+    private int mStepSelected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipedetail);
 
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            Log.d(TAG,MainActivity.RECIPE_DETAIL_KEY);
-            mRecipe = (Recipe) extras.getParcelable(MainActivity.RECIPE_DETAIL_KEY);
+        if(savedInstanceState!=null) {
+            mRecipe = savedInstanceState.getParcelable(MainActivity.RECIPE_DETAIL_KEY);
+            mStepSelected = savedInstanceState.getInt(STEP_ID_KEY);
+        } else {
+            Bundle extras = getIntent().getExtras();
+            if (extras != null) {
+    //            Log.d(TAG,MainActivity.RECIPE_DETAIL_KEY);
+                mRecipe = (Recipe) extras.getParcelable(MainActivity.RECIPE_DETAIL_KEY);
+            }
+            mStepSelected = 0;
+        }
+        if (mRecipe != null) {
 
-            if (mRecipe != null) {
+            setTitle(mRecipe.getName());
 
-                setTitle(mRecipe.getName());
+            if(findViewById(R.id.div_twopanes)!=null) {
+                mTwoPane = true;
+                Log.d(TAG,"[[[ TWO PANES ]]]");
 
-                if(findViewById(R.id.div_twopanes)!=null) {
-                    mTwoPane = true;
-                    Log.d(TAG,"[[[ TWO PANES ]]]");
+                RecipeDetailsFragment recipeFragment = new RecipeDetailsFragment(mRecipe);
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                fragmentManager.beginTransaction().add(R.id.recipedetails_container,recipeFragment).commit();
 
-                    RecipeDetailsFragment recipeFragment = new RecipeDetailsFragment(mRecipe);
-                    FragmentManager fragmentManager = getSupportFragmentManager();
-                    fragmentManager.beginTransaction().add(R.id.recipedetails_container,recipeFragment).commit();
+                StepDetailsFragment stepFragment = new StepDetailsFragment(mRecipe.getSteps().get(mStepSelected));
+                fragmentManager.beginTransaction().add(R.id.stepdetails_container,stepFragment).commit();
 
-                    StepDetailsFragment stepFragment = new StepDetailsFragment(mRecipe.getSteps().get(0));
-                    fragmentManager.beginTransaction().add(R.id.stepdetails_container,stepFragment).commit();
-
-                } else {
-                    mTwoPane = false;
-                    Log.d(TAG,"--- Single Pane ---");
-                    RecipeDetailsFragment recipeFragment = new RecipeDetailsFragment(mRecipe);
-                    FragmentManager fragmentManager = getSupportFragmentManager();
-                    fragmentManager.beginTransaction().add(R.id.recipedetails_container,recipeFragment).commit();
-                }
+            } else {
+                mTwoPane = false;
+                Log.d(TAG,"--- Single Pane ---");
+                RecipeDetailsFragment recipeFragment = new RecipeDetailsFragment(mRecipe);
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                fragmentManager.beginTransaction().add(R.id.recipedetails_container,recipeFragment).commit();
             }
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+//        super.onSaveInstanceState(outState);
+        outState.putParcelable(MainActivity.RECIPE_DETAIL_KEY,mRecipe);
+        outState.putInt(STEP_ID_KEY,mStepSelected);
     }
 
     // Define the behavior for onStepSelected
     @Override
     public void onStepSelected(int stepId) {
+        mStepSelected = stepId;
         if (mTwoPane) {
             // If two panes, replace right fragment in the same activity
             FragmentManager fragmentManager = getSupportFragmentManager();

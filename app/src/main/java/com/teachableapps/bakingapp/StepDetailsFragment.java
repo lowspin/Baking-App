@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -114,7 +116,11 @@ public class StepDetailsFragment extends Fragment implements View.OnClickListene
         }
 
         if(mStep != null) {
-            tv_description.setText(mStep.getDescription());
+            if(tv_description != null) {
+                tv_description.setText(mStep.getDescription());
+            } else {
+                // set full screen programmtically?
+            }
         }
         return rootView;
 

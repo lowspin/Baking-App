@@ -28,7 +28,6 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
         } else {
             Bundle extras = getIntent().getExtras();
             if (extras != null) {
-    //            Log.d(TAG,MainActivity.RECIPE_DETAIL_KEY);
                 mRecipe = (Recipe) extras.getParcelable(MainActivity.RECIPE_DETAIL_KEY);
             }
             mStepSelected = 0;

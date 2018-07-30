@@ -1,5 +1,8 @@
 package com.teachableapps.bakingapp;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,8 +10,10 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.RemoteViews;
 import android.widget.Toast;
 
+import com.teachableapps.bakingapp.models.Ingredient;
 import com.teachableapps.bakingapp.models.Recipe;
 import com.teachableapps.bakingapp.utilities.ApiUtils;
 
@@ -53,12 +58,30 @@ public class MainActivity extends AppCompatActivity implements RecipeListAdapter
 
     @Override
     public void OnListItemClick(Recipe recipe) {
+
+        // Update Widget
+        Context context = this;
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.baking_widget_provider);
+        ComponentName thisWidget = new ComponentName(context, BakingWidgetProvider.class);
+        String widgetText = recipe.getName()+"\n";
+        List<Ingredient> ingredientList = recipe.getIngredients();
+        for (int i=0; i<ingredientList.size(); i++) {
+            widgetText += ( " • " +
+                    ingredientList.get(i).getQuantity() + " " +
+                    ingredientList.get(i).getMeasure() + " " +
+                    ingredientList.get(i).getIngredient() + "\n");
+        }
+        remoteViews.setTextViewText(R.id.appwidget_text, widgetText);
+        appWidgetManager.updateAppWidget(thisWidget, remoteViews);
+
+        // Start Recipe Detail Activity
         Intent recipeDetailIntent = new Intent(MainActivity.this, RecipeDetailActivity.class);
         Bundle bundle = new Bundle();
         bundle.putParcelable(RECIPE_DETAIL_KEY, recipe);
         recipeDetailIntent.putExtras(bundle);
-//        recipeDetailIntent.putExtra(RECIPE_DETAIL_KEY, recipe);
         startActivity(recipeDetailIntent);
+
     }
 
     public void loadRecipes() {
@@ -74,11 +97,6 @@ public class MainActivity extends AppCompatActivity implements RecipeListAdapter
                 // Success
                 mRecipeList = response.body();
                 mRecipeListAdapter.setRecipeListData(mRecipeList);
-
-                //int numRecipes = recipeList.size();
-//                for (Recipe r : mRecipeList) {
-//                    Log.d(TAG,String.valueOf(r.getId()) + ": " + r.getName());
-//                }
             }
 
             @Override

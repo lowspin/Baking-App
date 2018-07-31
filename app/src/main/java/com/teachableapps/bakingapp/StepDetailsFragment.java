@@ -44,6 +44,9 @@ public class StepDetailsFragment extends Fragment implements View.OnClickListene
     private SimpleExoPlayer mExoPlayer;
     private SimpleExoPlayerView mPlayerView;
 
+    private long exoPosition = 0;
+    private boolean exoPlayWhenReady = true;
+
     // Define a new interface that triggers a callback in the host activity
     StepDetailsFragment.OnNavClickListener mCallback;
 
@@ -85,13 +88,6 @@ public class StepDetailsFragment extends Fragment implements View.OnClickListene
         iv_exo = (ImageView) rootView.findViewById(R.id.iv_exoplayer);
         mPlayerView = (SimpleExoPlayerView) rootView.findViewById(R.id.v_exoplayer);
         tv_description = rootView.findViewById(R.id.tv_step_description);
-
-        if(mStep.getVideoURL().length()>0){
-            Log.d(TAG,mStep.getVideoURL());
-            iv_exo.setVisibility(View.GONE);
-            // Initialize the player.
-            initializePlayer(Uri.parse(mStep.getVideoURL()));
-        }
 
         if(rootView.findViewById(R.id.nav_next)!=null) {
             nav_prev = rootView.findViewById(R.id.nav_prev);
@@ -142,7 +138,8 @@ public class StepDetailsFragment extends Fragment implements View.OnClickListene
             MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
                     getActivity(), userAgent), new DefaultExtractorsFactory(), null, null);
             mExoPlayer.prepare(mediaSource);
-            mExoPlayer.setPlayWhenReady(true);
+            mExoPlayer.seekTo(exoPosition);
+            mExoPlayer.setPlayWhenReady(exoPlayWhenReady);
         }
     }
 
@@ -156,14 +153,26 @@ public class StepDetailsFragment extends Fragment implements View.OnClickListene
         mExoPlayer = null;
     }
 
-    /**
-     * Release the player when the fragment is stopped.
-     */
+    // Release video player on pause
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onPause() {
+        super.onPause();
         if(mExoPlayer!=null) {
+            exoPosition = mExoPlayer.getCurrentPosition() ;
+            exoPlayWhenReady = mExoPlayer.getPlayWhenReady();
             releasePlayer();
+        }
+    }
+
+    // initialize video on resume
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(mStep.getVideoURL().length()>0){
+            Log.d(TAG,mStep.getVideoURL());
+            iv_exo.setVisibility(View.GONE);
+            // Initialize the player.
+            initializePlayer(Uri.parse(mStep.getVideoURL()));
         }
     }
 

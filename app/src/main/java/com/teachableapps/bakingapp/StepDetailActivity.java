@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -15,6 +14,7 @@ import java.util.List;
 
 public class StepDetailActivity extends AppCompatActivity implements StepDetailsFragment.OnNavClickListener {
     private static final String TAG = StepDetailActivity.class.getSimpleName();
+    private static final String TAG_STEPSTEP_FRAGMENT = "stepstepFragment";
 
     private Recipe mRecipe;
     private List<Step> mSteps=null;
@@ -25,36 +25,47 @@ public class StepDetailActivity extends AppCompatActivity implements StepDetails
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stepdetail);
 
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        StepDetailsFragment stepFragment = null;
+
         if (savedInstanceState != null) {
+
             mRecipe = savedInstanceState.getParcelable(RecipeDetailActivity.DETAIL_RECIPE_KEY);
             mStepId = savedInstanceState.getInt(RecipeDetailActivity.STEP_ID_KEY);
-            Log.d(TAG,"Rotate : " + mRecipe.getName());
+            mSteps = mRecipe.getSteps();
+
+            stepFragment = (StepDetailsFragment) fragmentManager.findFragmentByTag(TAG_STEPSTEP_FRAGMENT);
+            stepFragment.setStep(mSteps.get(mStepId));
+
         } else {
+
             Bundle extras = getIntent().getExtras();
             if (extras != null) {
                 mRecipe = extras.getParcelable(RecipeDetailActivity.DETAIL_RECIPE_KEY);
                 mStepId = extras.getInt(RecipeDetailActivity.STEP_ID_KEY);
             }
-        }
-        if(mRecipe!=null) {
+
             mSteps = mRecipe.getSteps();
-            setTitle(mRecipe.getName());
 
-            StepDetailsFragment stepFragment = new StepDetailsFragment(mSteps.get(mStepId));
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().add(R.id.stepdetails_container, stepFragment).commit();
+            stepFragment = new StepDetailsFragment(mSteps.get(mStepId));
+            fragmentManager.beginTransaction().add(R.id.stepdetails_container, stepFragment,TAG_STEPSTEP_FRAGMENT).commit();
 
-            if(findViewById(R.id.tv_step_description)==null) {
-                goFullscreen();
-            }
+        }
+
+        // set Activity Title
+        setTitle(mRecipe.getName());
+
+        // If landscape go full-screen
+        if(findViewById(R.id.tv_step_description)==null) {
+            goFullscreen();
         }
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-//        super.onSaveInstanceState(outState);
         outState.putParcelable(RecipeDetailActivity.DETAIL_RECIPE_KEY,mRecipe);
         outState.putInt(RecipeDetailActivity.STEP_ID_KEY,mStepId);
+        super.onSaveInstanceState(outState);
     }
 
     public void goFullscreen() {
@@ -81,7 +92,7 @@ public class StepDetailActivity extends AppCompatActivity implements StepDetails
             mStepId = newId;
             StepDetailsFragment stepFragment = new StepDetailsFragment(mSteps.get(newId));
             FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.stepdetails_container, stepFragment).commit();
+            fragmentManager.beginTransaction().replace(R.id.stepdetails_container, stepFragment,TAG_STEPSTEP_FRAGMENT).commit();
         }
     }
 }

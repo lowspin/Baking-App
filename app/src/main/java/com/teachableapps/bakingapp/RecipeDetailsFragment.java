@@ -6,11 +6,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.teachableapps.bakingapp.models.Ingredient;
@@ -23,6 +21,7 @@ public class RecipeDetailsFragment extends Fragment implements StepListAdapter.S
     private static final String TAG = RecipeDetailsFragment.class.getSimpleName();
 
     private Recipe mRecipe;
+    private static TextView tvIngredientsTitle;
     private static TextView tvIngredients;
     private RecyclerView mStepListRecyclerView;
     private StepListAdapter mStepListAdapter;
@@ -40,8 +39,7 @@ public class RecipeDetailsFragment extends Fragment implements StepListAdapter.S
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        // This makes sure that the host activity has implemented the callback interface
-        // If not, it throws an exception
+        // Make sure host activity has implemented the callback interface
         try {
             mCallback = (OnStepClickListener) context;
         } catch (ClassCastException e) {
@@ -59,20 +57,26 @@ public class RecipeDetailsFragment extends Fragment implements StepListAdapter.S
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        // Retain this fragment across configuration changes.
+        setRetainInstance(true);
+
         View rootView = inflater.inflate(R.layout.fragment_recipedetail, container, false);
         tvIngredients = rootView.findViewById(R.id.tv_ingredients);
-
-        // Add Recipe title to Ingredients heading
-        ((TextView) rootView.findViewById(R.id.tv_title_ingredients)).setText("Ingredients for " + mRecipe.getName() + ":");
+        tvIngredientsTitle = rootView.findViewById(R.id.tv_title_ingredients);
 
         // set ingredient list
-        setIngredientList();
+        if(tvIngredients!=null) {
+            setIngredientList();
+        }
 
         // set steps list
         mStepListRecyclerView = rootView.findViewById(R.id.rv_steps);
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mStepListRecyclerView.setLayoutManager(layoutManager);
         mStepListRecyclerView.setHasFixedSize(false);
+
         List<Step> mStepList = mRecipe.getSteps();
         mStepListAdapter = new StepListAdapter(mStepList, getActivity(), this);
         mStepListRecyclerView.setAdapter(mStepListAdapter);
@@ -80,7 +84,12 @@ public class RecipeDetailsFragment extends Fragment implements StepListAdapter.S
         return rootView;
     }
 
+    public void setRecipe(Recipe recipe) {
+        this.mRecipe = recipe;
+    }
+
     public void setIngredientList() {
+
         List<Ingredient> ingredientList = mRecipe.getIngredients();
         tvIngredients.setText("");
         for (int i=0; i<ingredientList.size(); i++) {
@@ -89,6 +98,10 @@ public class RecipeDetailsFragment extends Fragment implements StepListAdapter.S
                     ingredientList.get(i).getMeasure() + " " +
                     ingredientList.get(i).getIngredient() + "\n");
         }
+
+        // Add Recipe title to Ingredients heading
+        tvIngredientsTitle.setText("Ingredients for " + mRecipe.getName() + ":");
+
     }
 
     @Override

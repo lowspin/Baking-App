@@ -22,8 +22,10 @@ The Step Detail fragment consists of:
 
 When screen is rotated to landscape in the Step detail activity in the phone, the video is enlarged to fullscreen.
 
+When user leaves the app or rotates the device, video playback and state (play or pause) resumes at the last position.
+
 ## Widget
-A ompanion homescreen widget is provided which shows the last viewed recipe's list of ingredients. The data displayed on widget is replaced each time a new recipe is viewed.
+A ompanion homescreen widget is provided which shows the last viewed recipe's list of ingredients in a listview. The data displayed on widget is replaced each time a new recipe is viewed. Clicking on the title (name of the recipe) in the widget launches the app.
 
 ## Unit Test
 One unit test using Espresso has been added for the Main Activity:

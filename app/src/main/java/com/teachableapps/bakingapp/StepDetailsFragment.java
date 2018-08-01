@@ -96,7 +96,6 @@ public class StepDetailsFragment extends Fragment implements View.OnClickListene
 
         final View rootView = inflater.inflate(R.layout.fragment_stepdetail, container, false);
         if(savedInstanceState != null) {
-            Log.d(TAG,"onCreateView non-null savedInstanceState");
             exoPosition = savedInstanceState.getLong(KEY_EXO_POSITION);
             exoPlayWhenReady = savedInstanceState.getBoolean(KEY_EXO_PLAYREADY);
         }
@@ -114,7 +113,6 @@ public class StepDetailsFragment extends Fragment implements View.OnClickListene
                 public void onClick(View arg0) {
                     // Trigger the callback method and pass in the previous id
                     mCallback.onNavigate(mStep.getId() - 1);
-                    Log.d(TAG, "<<<<<<< Prev " + String.valueOf(mStep.getId() - 1));
                 }
             });
             nav_next.setOnClickListener(new View.OnClickListener() {
@@ -122,7 +120,6 @@ public class StepDetailsFragment extends Fragment implements View.OnClickListene
                 public void onClick(View arg0) {
                     // Trigger the callback method and pass in the next id
                     mCallback.onNavigate(mStep.getId() + 1);
-                    Log.d(TAG, "NExt >>>>>>>> " + String.valueOf(mStep.getId() + 1));
                 }
             });
         }
@@ -154,7 +151,6 @@ public class StepDetailsFragment extends Fragment implements View.OnClickListene
             MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
                     getActivity(), userAgent), new DefaultExtractorsFactory(), null, null);
             mExoPlayer.prepare(mediaSource);
-            Log.d(TAG,"Init Exo Seek: " + String.valueOf(exoPosition));
             mExoPlayer.seekTo(exoPosition);
             mExoPlayer.setPlayWhenReady(exoPlayWhenReady);
         }
@@ -163,7 +159,6 @@ public class StepDetailsFragment extends Fragment implements View.OnClickListene
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.d(TAG,"onSaveInstanceState");
         outState.putLong(KEY_EXO_POSITION,exoPosition);
         outState.putBoolean(KEY_EXO_PLAYREADY,exoPlayWhenReady);
     }
@@ -180,10 +175,8 @@ public class StepDetailsFragment extends Fragment implements View.OnClickListene
     // Release video player on pause
     @Override
     public void onPause() {
-        Log.d(TAG,"onPause");
         if(mExoPlayer!=null) {
             exoPosition = mExoPlayer.getCurrentPosition() ;
-            Log.d(TAG,"onPause Exo Pos: " + String.valueOf(exoPosition));
             exoPlayWhenReady = mExoPlayer.getPlayWhenReady();
             releasePlayer();
         }
@@ -194,9 +187,7 @@ public class StepDetailsFragment extends Fragment implements View.OnClickListene
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(TAG,"onResume");
         if(mStep.getVideoURL().length()>0){
-            Log.d(TAG,mStep.getVideoURL());
             iv_exo.setVisibility(View.GONE);
             // Initialize the player.
             initializePlayer(Uri.parse(mStep.getVideoURL()));

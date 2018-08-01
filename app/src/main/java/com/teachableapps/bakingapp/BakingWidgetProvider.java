@@ -37,7 +37,13 @@ public class BakingWidgetProvider extends AppWidgetProvider {
     private static RemoteViews getRecipeGridRemoteView(Context context) {
         // Construct the RemoteViews object
         RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.baking_widget_provider);
+
+        // Set Title
         rv.setTextViewText(R.id.appwidget_text, mRecipeName);
+
+        // Set the GridWidgetService intent to act as the adapter for the GridView
+        Intent widgetintent = new Intent(context, GridWidgetService.class);
+        rv.setRemoteAdapter(R.id.widget_listview, widgetintent);
 
         // Create an Intent to launch MainActivity when clicked
         Intent intent = new Intent(context, MainActivity.class);

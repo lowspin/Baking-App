@@ -27,6 +27,7 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity implements RecipeListAdapter.ListItemClickListener{
     private static final String TAG = MainActivity.class.getSimpleName();
     public static final String RECIPE_DETAIL_KEY = "recipedetail";
+    public static final String INGREDIENTS_STRINGS_KEY = "ingredientsstringskey";
 
     private List<Recipe> mRecipeList = new ArrayList<>();
     private RecyclerView mRecipeListRecyclerView;
@@ -64,23 +65,24 @@ public class MainActivity extends AppCompatActivity implements RecipeListAdapter
         Context context = this;
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
 
+        // compile ingredient list
         List<Ingredient> ingredientList = recipe.getIngredients();
         ArrayList<String> ingredientsStrings = new ArrayList<String>();
         for (int i=0; i<ingredientList.size(); i++) {
-            ingredientsStrings.add( " • " +
+            ingredientsStrings.add( //" • " +
                     ingredientList.get(i).getQuantity() + " " +
                     ingredientList.get(i).getMeasure() + " " +
                     ingredientList.get(i).getIngredient() + "\n");
         }
 
-//        Intent broadcastIntent = new Intent();
-//        broadcastIntent.setAction("com.teachableapps.broadcast.INGREDIENTS_STRINGS");
-//        broadcastIntent.putStringArrayListExtra(INGREDIENTS_STRINGS_KEY,ingredientsStrings);
-//        sendBroadcast(broadcastIntent);
-//        Log.d(TAG,"send broadcast intent");
+        // send broadcast intent to update ingredient list in widget
+        Intent broadcastIntent = new Intent();
+        broadcastIntent.setAction("com.teachableapps.bakingapp.broadcast.INGREDIENTS_STRINGS");
+        broadcastIntent.putStringArrayListExtra(INGREDIENTS_STRINGS_KEY,ingredientsStrings);
+        sendBroadcast(broadcastIntent);
 
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(this, BakingWidgetProvider.class));
-//        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds,R.id.widget_listview);
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds,R.id.widget_listview);
 
         //Now update all widgets
         BakingWidgetProvider.updateRecipeWidgets(this, appWidgetManager, recipe.getName(), appWidgetIds);

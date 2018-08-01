@@ -63,18 +63,27 @@ public class MainActivity extends AppCompatActivity implements RecipeListAdapter
         // Update Widget
         Context context = this;
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.baking_widget_provider);
-        ComponentName thisWidget = new ComponentName(context, BakingWidgetProvider.class);
-        String widgetText = recipe.getName()+"\n";
+
         List<Ingredient> ingredientList = recipe.getIngredients();
+        ArrayList<String> ingredientsStrings = new ArrayList<String>();
         for (int i=0; i<ingredientList.size(); i++) {
-            widgetText += ( " • " +
+            ingredientsStrings.add( " • " +
                     ingredientList.get(i).getQuantity() + " " +
                     ingredientList.get(i).getMeasure() + " " +
                     ingredientList.get(i).getIngredient() + "\n");
         }
-        remoteViews.setTextViewText(R.id.appwidget_text, widgetText);
-        appWidgetManager.updateAppWidget(thisWidget, remoteViews);
+
+//        Intent broadcastIntent = new Intent();
+//        broadcastIntent.setAction("com.teachableapps.broadcast.INGREDIENTS_STRINGS");
+//        broadcastIntent.putStringArrayListExtra(INGREDIENTS_STRINGS_KEY,ingredientsStrings);
+//        sendBroadcast(broadcastIntent);
+//        Log.d(TAG,"send broadcast intent");
+
+        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(this, BakingWidgetProvider.class));
+//        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds,R.id.widget_listview);
+
+        //Now update all widgets
+        BakingWidgetProvider.updateRecipeWidgets(this, appWidgetManager, recipe.getName(), appWidgetIds);
 
         // Start Recipe Detail Activity
         Intent recipeDetailIntent = new Intent(MainActivity.this, RecipeDetailActivity.class);

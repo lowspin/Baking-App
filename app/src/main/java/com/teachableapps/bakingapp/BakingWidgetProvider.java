@@ -5,33 +5,48 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 /**
  * Implementation of App Widget functionality.
  */
 public class BakingWidgetProvider extends AppWidgetProvider {
+    private static final String TAG = BakingWidgetProvider.class.getSimpleName();
+
+    private static String mRecipeName;
+
+    public static void updateRecipeWidgets(Context context, AppWidgetManager appWidgetManager,
+                                           String recipename, int[] appWidgetIds) {
+        mRecipeName = recipename;
+        for (int appWidgetId : appWidgetIds) {
+            updateAppWidget(context, appWidgetManager, appWidgetId);
+        }
+    }
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
 
-        CharSequence widgetText = context.getString(R.string.appwidget_text);
+        // Set remote views
+        RemoteViews rv = getRecipeGridRemoteView(context);
+
+        // Instruct the widget manager to update the widget
+        appWidgetManager.updateAppWidget(appWidgetId, rv);
+    }
+
+    private static RemoteViews getRecipeGridRemoteView(Context context) {
         // Construct the RemoteViews object
-        RemoteViews rmviews = new RemoteViews(context.getPackageName(), R.layout.baking_widget_provider);
-        rmviews.setTextViewText(R.id.appwidget_text, widgetText);
+        RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.baking_widget_provider);
+        rv.setTextViewText(R.id.appwidget_text, mRecipeName);
 
         // Create an Intent to launch MainActivity when clicked
         Intent intent = new Intent(context, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
-        // Construct the RemoteViews object
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.baking_widget_provider);
-
         // Widgets allow click handlers to only launch pending intents
-        views.setOnClickPendingIntent(R.id.appwidget_text, pendingIntent);
+        rv.setOnClickPendingIntent(R.id.appwidget_text, pendingIntent);
 
-        // Instruct the widget manager to update the widget
-        appWidgetManager.updateAppWidget(appWidgetId, views);
+        return rv;
     }
 
     @Override
